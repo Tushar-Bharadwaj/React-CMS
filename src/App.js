@@ -1,26 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Router, Switch } from "react-router-dom";
+import { history } from 'helper/history';
+import Home from './components/Home';
+import Login from './pages/Login/Login';
 import './App.css';
+import AppRoute from './components/Route/AppRoute';
+import DashboardLayout from './components/Layouts/DashboardLayout/DashboardLayout';
+import { MainLayout } from './components/Layouts/MainLayout/MainLayout';
+import { AuthenticationService } from 'services/AuthenticationService';
 
-function App() {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentUser: null
+    };
+  }
+  componentDidMount() {
+    AuthenticationService.currentUser.subscribe(x => this.setState({
+      currentUser: x
+    }));
+  }
+  logout = () => {
+     AuthenticationService.logout();
+     history.push('/login');
+  }
+
+  render() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <Router history={history}>
+        <Switch>
+          <AppRoute exact path="/" component={Login} layout={MainLayout}/>
+          <AppRoute exact path="/Home" component={Home} layout={DashboardLayout} />
+        </Switch>
+      </Router>
+    );
+  }
+  
 }
 
 export default App;
