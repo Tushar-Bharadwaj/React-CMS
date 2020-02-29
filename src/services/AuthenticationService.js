@@ -2,6 +2,8 @@ import { BehaviorSubject} from 'rxjs';
 
 import { API_URL } from 'constants/SiteConfig';
 import { HandleResponse } from 'helper/HandleResponse';
+import { AuthorizedRequests } from "utils/AxiosHelper";
+
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
@@ -33,7 +35,7 @@ function login(email, password) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('currentUser', JSON.stringify(user));
             currentUserSubject.next(user);
-
+            AuthorizedRequests.defaults.headers.common['Authorization'] = 'Bearer ' + user.accessToken;
             return user;
         });
 }
