@@ -33,7 +33,6 @@ export default class Home extends Component {
   };
 
   handleDelete = userId => {
-    console.log(userId);
     AuthorizedRequests.delete(`/user/${userId}`)
       .then(response => {
         message.success("User Deleted Successfully");

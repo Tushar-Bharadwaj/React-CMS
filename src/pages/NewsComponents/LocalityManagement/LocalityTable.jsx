@@ -1,22 +1,18 @@
 import React from "react";
 import { Table, Divider, Button } from "antd";
-import EditUser from "pages/UserManagement/EditUser";
 const { Column } = Table;
-const HomePageTable = ({ data, deleteUser }) => {
+const LocalityTable = ({ data, deleteLocality }) => {
   return (
-    <Table size="small" dataSource={data}>
-      <Column title="id" dataIndex="key" key="key" />
+    <Table size="small" dataSource={data} rowKey={data => data.id}>
+      <Column title="id" dataIndex="id" key="key" />
       <Column title="Name" dataIndex="name" key="name" />
-      <Column title="Email" dataIndex="email" key="email" />
-
       <Column
         title="Action"
         key="action"
         render={(text, record) => (
           <span>
-            <EditUser userId={record.key} />
             <Divider type="vertical" />
-            <Button type="danger" onClick={() => deleteUser(record.key)}>
+            <Button type="danger" onClick={() => deleteLocality(record.id)}>
               Delete
             </Button>
           </span>
@@ -26,4 +22,4 @@ const HomePageTable = ({ data, deleteUser }) => {
   );
 };
 
-export default HomePageTable;
+export default LocalityTable;

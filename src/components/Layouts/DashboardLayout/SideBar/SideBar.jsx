@@ -80,7 +80,7 @@ class SideBar extends React.Component {
               </SubMenu>
             )}
           {currentUser && (
-            <Menu.Item key="4" onClick={this.logout}>
+            <Menu.Item key="6" onClick={this.logout}>
               <Icon type="upload" />
               <span>Logout</span>
             </Menu.Item>
