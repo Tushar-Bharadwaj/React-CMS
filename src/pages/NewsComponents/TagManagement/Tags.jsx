@@ -10,11 +10,23 @@ export default class Tags extends React.Component {
     super(props);
     this.state = {
       isLoaded: false,
-      tagss: null
+      tags: null
     };
   }
-  deleteTags = tagsId => {
-    AuthorizedRequests.delete(`/tag/${tagsId}`)
+  toggleStatus = tagId => {
+    AuthorizedRequests.put(`/tag/activity/${tagId}`)
+      .then(response => {
+        let status = "inactive";
+        if (response.data.active) status = "active";
+        message.success(`${response.data.name} was set to ${status}.`);
+        this.initializeTags();
+      })
+      .catch(error => {
+        message.error(error.response.data.message);
+      });
+  };
+  deleteTags = tagId => {
+    AuthorizedRequests.delete(`/tag/${tagId}`)
       .then(response => {
         message.success("Tags Deleted Successfully");
         this.initializeTags();
@@ -27,7 +39,7 @@ export default class Tags extends React.Component {
     this.setState({ isLoaded: false });
     AuthorizedRequests.get(`/tag`)
       .then(response => {
-        this.setState({ tagss: response.data, isLoaded: true });
+        this.setState({ tags: response.data, isLoaded: true });
       })
       .catch(error => message.error(error));
   };
@@ -46,7 +58,12 @@ export default class Tags extends React.Component {
           </Col>
           <Col span={12} style={{ textAlign: "right" }}></Col>
         </Row>
-        <TagsTable data={this.state.tagss} deleteTags={this.deleteTags} />
+        <TagsTable
+          data={this.state.tags}
+          toggleStatus={this.toggleStatus}
+          deleteTags={this.deleteTags}
+          initializeTags={this.initializeTags}
+        />
       </>
     );
   }

@@ -13,6 +13,18 @@ export default class Language extends React.Component {
       languages: null
     };
   }
+  toggleStatus = languageId => {
+    AuthorizedRequests.put(`/language/activity/${languageId}`)
+      .then(response => {
+        let status = "inactive";
+        if (response.data.active) status = "active";
+        message.success(`${response.data.name} was set to ${status}.`);
+        this.initializeLanguage();
+      })
+      .catch(error => {
+        message.error(error.response.data.message);
+      });
+  };
   deleteLanguage = languageId => {
     AuthorizedRequests.delete(`/language/${languageId}`)
       .then(response => {
@@ -48,7 +60,9 @@ export default class Language extends React.Component {
         </Row>
         <LanguageTable
           data={this.state.languages}
+          toggleStatus={this.toggleStatus}
           deleteLanguage={this.deleteLanguage}
+          initializeLanguage={this.initializeLanguage}
         />
       </>
     );

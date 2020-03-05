@@ -13,7 +13,7 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
       return (
         <Modal
           visible={visible}
-          title="Edit Locality"
+          title="Edit Language"
           okText="Update"
           onCancel={onCancel}
           onOk={onCreate}
@@ -32,7 +32,7 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
   }
 );
 
-class EditLocality extends React.Component {
+class EditLanguage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,7 +43,7 @@ class EditLocality extends React.Component {
   }
 
   showModal = () => {
-    AuthorizedRequests.get(`/locality/${this.props.localityId}`)
+    AuthorizedRequests.get(`/language/${this.props.languageId}`)
       .then(response => {
         this.setState({
           name: response.data.name,
@@ -66,13 +66,13 @@ class EditLocality extends React.Component {
       if (err) {
         return "";
       }
-      AuthorizedRequests.put(`/locality/${this.props.localityId}`, {
+      AuthorizedRequests.put(`/language/${this.props.languageId}`, {
         name: values.name
       })
         .then(response => {
-          message.success("Locality Updated Successfully");
+          message.success("Language Updated Successfully");
           form.resetFields();
-          this.props.initializeLocality();
+          this.props.initializeLanguage();
           this.setState({ visible: false });
         })
         .catch(error => {
@@ -89,7 +89,7 @@ class EditLocality extends React.Component {
     return (
       <div>
         <Button type="ghost" onClick={this.showModal} icon="user-add">
-          Edit Locality
+          Edit Language
         </Button>
         {this.state.isLoaded && (
           <CollectionCreateForm
@@ -107,4 +107,4 @@ class EditLocality extends React.Component {
   }
 }
 
-export default EditLocality;
+export default EditLanguage;

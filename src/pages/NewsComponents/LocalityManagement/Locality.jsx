@@ -13,6 +13,18 @@ export default class Locality extends React.Component {
       localitys: null
     };
   }
+  toggleStatus = localityId => {
+    AuthorizedRequests.put(`/locality/activity/${localityId}`)
+      .then(response => {
+        let status = "inactive";
+        if (response.data.active) status = "active";
+        message.success(`${response.data.name} was set to ${status}.`);
+        this.initializeLocality();
+      })
+      .catch(error => {
+        message.error(error.response.data.message);
+      });
+  };
   deleteLocality = localityId => {
     AuthorizedRequests.delete(`/locality/${localityId}`)
       .then(response => {
@@ -48,7 +60,9 @@ export default class Locality extends React.Component {
         </Row>
         <LocalityTable
           data={this.state.localitys}
+          toggleStatus={this.toggleStatus}
           deleteLocality={this.deleteLocality}
+          initializeLocality={this.initializeLocality}
         />
       </>
     );
