@@ -5,7 +5,6 @@ const { Column } = Table;
 
 const GenreTable = ({ data, deleteGenre, toggleStatus, initializeGenre }) => {
   const SwitchStatus = record => {
-    console.log(record.active);
     if (record.active) {
       return <Switch checked onChange={() => toggleStatus(record.id)} />;
     }

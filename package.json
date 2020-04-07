@@ -2,7 +2,11 @@
   "name": "ingestion-cms",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080/",
+  "proxy": true,
+  "engines": {
+    "node": "10.15.3",
+    "npm": "6.13.7"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
