@@ -63,6 +63,7 @@ class AddGenre extends React.Component {
           this.setState({ visible: false });
         })
         .catch(error => {
+          console.log(error.response.data.message);
           message.error(error.response.data.message);
         });
     });

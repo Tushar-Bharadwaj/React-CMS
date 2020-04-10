@@ -7,6 +7,8 @@ import Login from './pages/Login/Login';
 import Locality from './pages/NewsComponents/LocalityManagement/Locality';
 import Language from './pages/NewsComponents/LanguageManagement/Language';
 import Tags from './pages/NewsComponents/TagManagement/Tags';
+import News from './pages/NewsManagement/News';
+import AddNews from './pages/NewsManagement/AddNews';
 import './App.css';
 import AppRoute from './components/Route/AppRoute';
 import PrivateRoute from './components/Route/PrivateRoute';
@@ -42,9 +44,8 @@ class App extends React.Component {
           <PrivateRoute exact path="/locality" component={Locality} layout={DashboardLayout} />
           <PrivateRoute exact path="/language" component={Language} layout={DashboardLayout} />
           <PrivateRoute exact path="/tags" component={Tags} layout={DashboardLayout} />
-
-
-
+          <PrivateRoute exact path="/news" component={News} layout={DashboardLayout} />
+          <PrivateRoute exact path="/addNews" component={AddNews} layout={DashboardLayout} />
         </Switch>
       </Router>
     );
