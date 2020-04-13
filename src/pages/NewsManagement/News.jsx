@@ -2,14 +2,15 @@ import React from "react";
 import { Row, Col, Typography, message } from "antd";
 import { AuthorizedRequests } from "utils/AxiosHelper";
 import AddNews from "./AddNews";
+import NewsTable from "./NewsTable";
 const { Title } = Typography;
 
-export default class Genre extends React.Component {
+export default class News extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoaded: false,
-      genres: null
+      news: null
     };
   }
 
@@ -25,7 +26,7 @@ export default class Genre extends React.Component {
   toggleStatus = newsId => {
     //Set Trending Or Not Trending Depending On Current Value
   };
-  deleteGenre = newsId => {
+  deleteNews = newsId => {
     AuthorizedRequests.delete(`/news/${newsId}`)
       .then(response => {
         message.success("News Deleted Successfully");
@@ -36,18 +37,28 @@ export default class Genre extends React.Component {
       });
   };
 
+  componentDidMount() {
+    this.initializeNews();
+  }
+
   render() {
     return (
       <>
         <Row type="flex" justify="space-between">
           <Col span={12}>
-            <Title level={2}> Genre Management</Title>
+            <Title level={2}> News Management</Title>
           </Col>
           <Col span={12} style={{ textAlign: "right" }}>
             <AddNews />
           </Col>
           <Col span={12} style={{ textAlign: "right" }}></Col>
         </Row>
+        <NewsTable
+          data={this.state.news}
+          toggleStatus={this.toggleStatus}
+          deleteNews={this.deleteNews}
+          initializeNews={this.initializeNews}
+        />
       </>
     );
   }

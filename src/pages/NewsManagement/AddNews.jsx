@@ -21,7 +21,6 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
       const { visible, onCancel, onCreate, form } = this.props;
       const { getFieldDecorator } = form;
       const { manager } = this.props;
-      console.log(manager.genres.map(el => el.id));
       return (
         <Modal
           visible={visible}
