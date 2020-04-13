@@ -12,25 +12,24 @@ export default class Genre extends React.Component {
       genres: null
     };
   }
-  toggleStatus = genreId => {
-    AuthorizedRequests.put(`/genre/activity/${genreId}`)
+
+  initializeNews = () => {
+    this.setState({ isLoaded: false });
+    AuthorizedRequests.get(`/news`)
       .then(response => {
         console.log(response.data);
-        let status = "inactive";
-        if (response.data.active) status = "active";
-        message.success(`${response.data.name} was set to ${status}.`);
-        this.initializeGenre();
+        this.setState({ news: response.data, isLoaded: true });
       })
-      .catch(error => {
-        message.error(error.response.data.message);
-      });
-    console.log(genreId);
+      .catch(error => message.error(error));
   };
-  deleteGenre = genreId => {
-    AuthorizedRequests.delete(`/genre/${genreId}`)
+  toggleStatus = newsId => {
+    //Set Trending Or Not Trending Depending On Current Value
+  };
+  deleteGenre = newsId => {
+    AuthorizedRequests.delete(`/news/${newsId}`)
       .then(response => {
-        message.success("Genre Deleted Successfully");
-        this.initializeGenre();
+        message.success("News Deleted Successfully");
+        this.initializeNews();
       })
       .catch(error => {
         message.error(error.response.data.message);

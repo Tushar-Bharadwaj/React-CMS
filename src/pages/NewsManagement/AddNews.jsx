@@ -169,7 +169,6 @@ class AddNews extends React.Component {
           genres: response.data,
           genreLoaded: true
         });
-        console.log(this.state.genres);
       })
       .catch(error => message.error(error));
   };
@@ -182,7 +181,6 @@ class AddNews extends React.Component {
           localities: response.data,
           localityLoaded: true
         });
-        console.log(this.state.localities);
       })
       .catch(error => message.error(error));
   };
@@ -195,7 +193,6 @@ class AddNews extends React.Component {
           languages: response.data,
           languageLoaded: true
         });
-        console.log(this.state.languages);
       })
       .catch(error => message.error(error));
   };
