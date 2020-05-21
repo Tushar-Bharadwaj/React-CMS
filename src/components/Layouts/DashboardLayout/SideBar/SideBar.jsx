@@ -18,19 +18,19 @@ class SideBar extends React.Component {
 
     this.state = {
       currentUser: null,
-      isLoaded: false
+      isLoaded: false,
     };
   }
 
   componentDidMount() {
     AuthorizedRequests.get(`/user/info`)
-      .then(response => {
+      .then((response) => {
         this.setState({
           currentUser: response.data,
-          isLoaded: true
+          isLoaded: true,
         });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   }
 
   render() {
@@ -76,6 +76,11 @@ class SideBar extends React.Component {
                   <Icon type="experiment" />
                   <span>Genre</span>
                   <Link to="/genre" />
+                </Menu.Item>
+                <Menu.Item key="10">
+                  <Icon type="environment" />
+                  <span>Source</span>
+                  <Link to="/source" />
                 </Menu.Item>
               </SubMenu>
             )}

@@ -18,7 +18,13 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
     }
 
     render() {
-      const { visible, onCancel, onCreate, form } = this.props;
+      const {
+        visible,
+        onCancel,
+        onCreate,
+        form,
+        handleImageUpload,
+      } = this.props;
       const { getFieldDecorator } = form;
       const { manager } = this.props;
       return (
@@ -64,6 +70,24 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
               })(
                 <Select mode="multiple" placeholder="Please select genre">
                   {manager.genres.map((element) => (
+                    <Option key={element.id} value={element.id}>
+                      {element.name}
+                    </Option>
+                  ))}
+                </Select>
+              )}
+            </Form.Item>
+            <Form.Item label="Source">
+              {getFieldDecorator("sourceId", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Please select Source!",
+                  },
+                ],
+              })(
+                <Select placeholder="Please select source">
+                  {manager.sources.map((element) => (
                     <Option key={element.id} value={element.id}>
                       {element.name}
                     </Option>
@@ -121,7 +145,10 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
               })(<Select mode="tags" placeholder="Enter Tags"></Select>)}
             </Form.Item>
             <Form.Item>
-              <FileBase64 multiple={false} onDone={this.getFiles.bind(this)} />
+              <FileBase64
+                multiple={false}
+                onDone={handleImageUpload.bind(this)}
+              />
             </Form.Item>
           </Form>
         </Modal>
@@ -140,13 +167,19 @@ class AddNews extends React.Component {
       genreLoaded: false,
       tagLoaded: false,
       localityLoaded: false,
+      sourceLoaded: false,
       genres: "",
       tags: "",
       localities: "",
       languages: "",
       files: "",
+      sources: "",
     };
   }
+
+  handleImageUpload = (files) => {
+    this.setState({ files: files.base64.split(",")[1] });
+  };
 
   showModal = () => {
     this.setState({ visible: true });
@@ -191,6 +224,18 @@ class AddNews extends React.Component {
       })
       .catch((error) => message.error(error));
   };
+  initializeSource = () => {
+    this.setState({ sourceLoaded: false });
+
+    AuthorizedRequests.get(`/source`)
+      .then((response) => {
+        this.setState({
+          sources: response.data.all_the_sources,
+          sourceLoaded: true,
+        });
+      })
+      .catch((error) => message.error(error));
+  };
 
   handleCreate = () => {
     const { form } = this.formRef.props;
@@ -199,6 +244,7 @@ class AddNews extends React.Component {
         alert("Error");
         return "";
       }
+      console.log(this.state.files);
       let newsRequest = {
         userId: 1,
         title: values.title,
@@ -208,15 +254,17 @@ class AddNews extends React.Component {
         localityIds: values.localityIds,
         languageIds: values.languageIds,
         genreIds: values.genreIds,
+        sourceId: values.sourceId,
         base64string: this.state.files,
       };
-      AuthorizedRequests.post("/news", newsRequest)
+      AuthorizedRequests.post("/auth/news", newsRequest)
         .then((response) => {
           message.success("News Uploaded Successfully");
           form.resetFields();
           this.setState({ visible: false });
         })
         .catch((error) => {
+          console.log(error.response.data);
           message.error(error.response.data.message);
         });
     });
@@ -230,6 +278,7 @@ class AddNews extends React.Component {
     this.initializeGenre();
     this.initializeLocality();
     this.initializeLanguage();
+    this.initializeSource();
   }
 
   render() {
@@ -240,13 +289,15 @@ class AddNews extends React.Component {
         </Button>
         {this.state.languageLoaded &&
           this.state.localityLoaded &&
-          this.state.genreLoaded && (
+          this.state.genreLoaded &&
+          this.state.sourceLoaded && (
             <CollectionCreateForm
               wrappedComponentRef={this.saveFormRef}
               visible={this.state.visible}
               onCancel={this.handleCancel}
               onCreate={this.handleCreate}
               manager={this.state}
+              handleImageUpload={this.handleImageUpload}
             />
           )}
       </div>
