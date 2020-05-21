@@ -10,61 +10,66 @@ export default class Locality extends React.Component {
     super(props);
     this.state = {
       isLoaded: false,
-      localitys: null
+      localitys: null,
     };
   }
-  toggleStatus = localityId => {
-    AuthorizedRequests.put(`/locality/activity/${localityId}`)
-      .then(response => {
+  toggleStatus = (localityId) => {
+    AuthorizedRequests.put(`/locality/active/${localityId}`)
+      .then((response) => {
         let status = "inactive";
         if (response.data.active) status = "active";
         message.success(`${response.data.name} was set to ${status}.`);
         this.initializeLocality();
       })
-      .catch(error => {
+      .catch((error) => {
         message.error(error.response.data.message);
       });
   };
-  deleteLocality = localityId => {
+  deleteLocality = (localityId) => {
     AuthorizedRequests.delete(`/locality/${localityId}`)
-      .then(response => {
+      .then((response) => {
         message.success("Locality Deleted Successfully");
         this.initializeLocality();
       })
-      .catch(error => {
+      .catch((error) => {
         message.error(error.response.data.message);
       });
   };
   initializeLocality = () => {
     this.setState({ isLoaded: false });
     AuthorizedRequests.get(`/locality`)
-      .then(response => {
-        this.setState({ localitys: response.data, isLoaded: true });
+      .then((response) => {
+        this.setState({
+          localitys: response.data.all_the_localities,
+          isLoaded: true,
+        });
       })
-      .catch(error => message.error(error));
+      .catch((error) => message.error(error));
   };
   componentDidMount() {
     this.initializeLocality();
   }
   render() {
     return (
-      <>
-        <Row type="flex" justify="space-between">
-          <Col span={12}>
-            <Title level={2}> Locality Management</Title>
-          </Col>
-          <Col span={12} style={{ textAlign: "right" }}>
-            <AddLocality initializeLocality={this.initializeLocality} />
-          </Col>
-          <Col span={12} style={{ textAlign: "right" }}></Col>
-        </Row>
-        <LocalityTable
-          data={this.state.localitys}
-          toggleStatus={this.toggleStatus}
-          deleteLocality={this.deleteLocality}
-          initializeLocality={this.initializeLocality}
-        />
-      </>
+      this.state.isLoaded && (
+        <>
+          <Row type="flex" justify="space-between">
+            <Col span={12}>
+              <Title level={2}> Locality Management</Title>
+            </Col>
+            <Col span={12} style={{ textAlign: "right" }}>
+              <AddLocality initializeLocality={this.initializeLocality} />
+            </Col>
+            <Col span={12} style={{ textAlign: "right" }}></Col>
+          </Row>
+          <LocalityTable
+            data={this.state.localitys}
+            toggleStatus={this.toggleStatus}
+            deleteLocality={this.deleteLocality}
+            initializeLocality={this.initializeLocality}
+          />
+        </>
+      )
     );
   }
 }

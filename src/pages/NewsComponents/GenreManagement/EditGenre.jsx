@@ -67,7 +67,7 @@ class EditGenre extends React.Component {
       if (err) {
         return "";
       }
-      AuthorizedRequests.put(`/genre/${this.props.genreId}`, {
+      AuthorizedRequests.put(`/genre/name/${this.props.genreId}`, {
         name: values.name
       })
         .then(response => {

@@ -66,7 +66,7 @@ class EditLocality extends React.Component {
       if (err) {
         return "";
       }
-      AuthorizedRequests.put(`/locality/${this.props.localityId}`, {
+      AuthorizedRequests.put(`/locality/name/${this.props.localityId}`, {
         name: values.name
       })
         .then(response => {

@@ -10,29 +10,46 @@ export default class News extends React.Component {
     super(props);
     this.state = {
       isLoaded: false,
-      news: null
+      news: null,
     };
   }
 
   initializeNews = () => {
     this.setState({ isLoaded: false });
-    AuthorizedRequests.get(`/news`)
-      .then(response => {
+    AuthorizedRequests.get(`/auth/news`)
+      .then((response) => {
         console.log(response.data);
         this.setState({ news: response.data, isLoaded: true });
       })
-      .catch(error => message.error(error));
+      .catch((error) => message.error(error));
   };
-  toggleStatus = newsId => {
-    //Set Trending Or Not Trending Depending On Current Value
+  toggleTrending = (newsId) => {
+    AuthorizedRequests.post(`/news/updateTrending/${newsId}`)
+      .then((response) => {
+        message.success(`${response.data}`);
+        this.initializeNews();
+      })
+      .catch((error) => {
+        message.error(error.response.data.message);
+      });
   };
-  deleteNews = newsId => {
+  togglePublished = (newsId) => {
+    AuthorizedRequests.post(`/news/updatePublished/${newsId}`)
+      .then((response) => {
+        message.success(`${response.data}`);
+        this.initializeNews();
+      })
+      .catch((error) => {
+        message.error(error.response.data.message);
+      });
+  };
+  deleteNews = (newsId) => {
     AuthorizedRequests.delete(`/news/${newsId}`)
-      .then(response => {
+      .then((response) => {
         message.success("News Deleted Successfully");
         this.initializeNews();
       })
-      .catch(error => {
+      .catch((error) => {
         message.error(error.response.data.message);
       });
   };
@@ -43,23 +60,26 @@ export default class News extends React.Component {
 
   render() {
     return (
-      <>
-        <Row type="flex" justify="space-between">
-          <Col span={12}>
-            <Title level={2}> News Management</Title>
-          </Col>
-          <Col span={12} style={{ textAlign: "right" }}>
-            <AddNews />
-          </Col>
-          <Col span={12} style={{ textAlign: "right" }}></Col>
-        </Row>
-        <NewsTable
-          data={this.state.news}
-          toggleStatus={this.toggleStatus}
-          deleteNews={this.deleteNews}
-          initializeNews={this.initializeNews}
-        />
-      </>
+      this.state.isLoaded && (
+        <>
+          <Row type="flex" justify="space-between">
+            <Col span={12}>
+              <Title level={2}> News Management</Title>
+            </Col>
+            <Col span={12} style={{ textAlign: "right" }}>
+              <AddNews />
+            </Col>
+            <Col span={12} style={{ textAlign: "right" }}></Col>
+          </Row>
+          <NewsTable
+            data={this.state.news}
+            toggleTrending={this.toggleTrending}
+            deleteNews={this.deleteNews}
+            initializeNews={this.initializeNews}
+            togglePublished={this.togglePublished}
+          />
+        </>
+      )
     );
   }
 }

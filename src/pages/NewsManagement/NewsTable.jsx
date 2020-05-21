@@ -4,20 +4,37 @@ import { AWS_PREFIX } from "../../constants/SiteConfig";
 
 const gridStyle = {
   width: "25%",
-  textAlign: "center"
+  textAlign: "center",
 };
 
-const NewsTable = ({ data, deleteNews, toggleStatus, initializeNews }) => {
-  //   const SwitchStatus = record => {
-  //     if (record.active) {
-  //       return <Switch checked onChange={() => toggleStatus(record.id)} />;
-  //     }
-  //     return <Switch checked={false} onChange={() => toggleStatus(record.id)} />;
-  //   };
+const NewsTable = ({
+  data,
+  deleteNews,
+  toggleTrending,
+  togglePublished,
+  initializeNews,
+}) => {
+  let SwitchTrending = (record) => {
+    if (record.trending) {
+      return <Switch checked onChange={() => toggleTrending(record.id)} />;
+    }
+    return (
+      <Switch checked={false} onChange={() => toggleTrending(record.id)} />
+    );
+  };
+
+  let SwitchPublished = (record) => {
+    if (record.published) {
+      return <Switch checked onChange={() => togglePublished(record.id)} />;
+    }
+    return (
+      <Switch checked={false} onChange={() => togglePublished(record.id)} />
+    );
+  };
 
   return (
     <Card title="Card Title">
-      {data?.map(details => {
+      {data?.map((details) => {
         return (
           <Card.Grid style={gridStyle} key={details.id}>
             <img
@@ -29,16 +46,23 @@ const NewsTable = ({ data, deleteNews, toggleStatus, initializeNews }) => {
             <Card.Meta title={details.title} description={details.shortText} />
             <br />
             <Row>
-              <Col span={8}>
+              <Col span={12}>
                 <Button type="primary">Edit</Button>
               </Col>
-              <Col span={8}>
-                <Switch defaultChecked />
+              <Col span={12}>
+                <Button type="danger" onClick={() => deleteNews(details.id)}>
+                  Delete
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <span>{SwitchPublished(details)}</span>
                 <br />
                 Publish
               </Col>
-              <Col span={8}>
-                <Switch defaultChecked />
+              <Col span={12}>
+                <span>{SwitchTrending(details)}</span>
                 <br />
                 Set Trending
               </Col>

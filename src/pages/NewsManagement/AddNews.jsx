@@ -33,21 +33,23 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
           <Form layout="vertical">
             <Form.Item label="Title">
               {getFieldDecorator("title", {
-                rules: [{ required: true, message: "Please Enter News Title!" }]
+                rules: [
+                  { required: true, message: "Please Enter News Title!" },
+                ],
               })(<Input />)}
             </Form.Item>
             <Form.Item label="Content">
               {getFieldDecorator("content", {
                 rules: [
-                  { required: true, message: "Please Enter News Content!" }
-                ]
+                  { required: true, message: "Please Enter News Content!" },
+                ],
               })(<Input.TextArea />)}
             </Form.Item>
             <Form.Item label="Short Text">
               {getFieldDecorator("shortText", {
                 rules: [
-                  { required: true, message: "Please Enter News ShortText!" }
-                ]
+                  { required: true, message: "Please Enter News ShortText!" },
+                ],
               })(<Input />)}
             </Form.Item>
             <Form.Item label="Genre">
@@ -56,12 +58,12 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
                   {
                     required: true,
                     message: "Please select Genre!",
-                    type: "array"
-                  }
-                ]
+                    type: "array",
+                  },
+                ],
               })(
                 <Select mode="multiple" placeholder="Please select genre">
-                  {manager.genres.map(element => (
+                  {manager.genres.map((element) => (
                     <Option key={element.id} value={element.id}>
                       {element.name}
                     </Option>
@@ -75,12 +77,12 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
                   {
                     required: true,
                     message: "Please select Locality!",
-                    type: "array"
-                  }
-                ]
+                    type: "array",
+                  },
+                ],
               })(
                 <Select mode="multiple" placeholder="Please select localities">
-                  {manager.localities.map(element => (
+                  {manager.localities.map((element) => (
                     <Option key={element.id} value={element.id}>
                       {element.name}
                     </Option>
@@ -94,12 +96,12 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
                   {
                     required: true,
                     message: "Please select your languages!",
-                    type: "array"
-                  }
-                ]
+                    type: "array",
+                  },
+                ],
               })(
                 <Select mode="multiple" placeholder="Please select language">
-                  {manager.languages.map(element => (
+                  {manager.languages.map((element) => (
                     <Option key={element.id} value={element.id}>
                       {element.name}
                     </Option>
@@ -113,9 +115,9 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
                   {
                     required: true,
                     message: "Please select your tags!",
-                    type: "array"
-                  }
-                ]
+                    type: "array",
+                  },
+                ],
               })(<Select mode="tags" placeholder="Enter Tags"></Select>)}
             </Form.Item>
             <Form.Item>
@@ -124,7 +126,7 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
             <Form.Item label="Title" style={{ display: "none" }}>
               {getFieldDecorator("file", {
                 initialValue: this.state.files,
-                rules: [{ required: true, message: "Please Upload file!" }]
+                rules: [{ required: true, message: "Please Upload file!" }],
               })(<Input style={{ display: "none" }} />)}
             </Form.Item>
           </Form>
@@ -148,7 +150,7 @@ class AddNews extends React.Component {
       tags: "",
       localities: "",
       languages: "",
-      files: ""
+      files: "",
     };
   }
 
@@ -163,37 +165,37 @@ class AddNews extends React.Component {
   initializeGenre = () => {
     this.setState({ genreLoaded: false });
     AuthorizedRequests.get(`/genre`)
-      .then(response => {
+      .then((response) => {
         this.setState({
-          genres: response.data,
-          genreLoaded: true
+          genres: response.data.all_the_genres,
+          genreLoaded: true,
         });
       })
-      .catch(error => message.error(error));
+      .catch((error) => message.error(error));
   };
   initializeLocality = () => {
     this.setState({ localityLoaded: false });
 
     AuthorizedRequests.get(`/locality`)
-      .then(response => {
+      .then((response) => {
         this.setState({
-          localities: response.data,
-          localityLoaded: true
+          localities: response.data.all_the_localities,
+          localityLoaded: true,
         });
       })
-      .catch(error => message.error(error));
+      .catch((error) => message.error(error));
   };
   initializeLanguage = () => {
     this.setState({ languageLoaded: false });
 
     AuthorizedRequests.get(`/language`)
-      .then(response => {
+      .then((response) => {
         this.setState({
-          languages: response.data,
-          languageLoaded: true
+          languages: response.data.all_the_languages,
+          languageLoaded: true,
         });
       })
-      .catch(error => message.error(error));
+      .catch((error) => message.error(error));
   };
 
   handleCreate = () => {
@@ -212,21 +214,21 @@ class AddNews extends React.Component {
         localityIds: values.localityIds,
         languageIds: values.languageIds,
         genreIds: values.genreIds,
-        base64string: values.file
+        base64string: values.file,
       };
       AuthorizedRequests.post("/news", newsRequest)
-        .then(response => {
+        .then((response) => {
           message.success("News Uploaded Successfully");
           form.resetFields();
           this.setState({ visible: false });
         })
-        .catch(error => {
+        .catch((error) => {
           message.error(error.response.data.message);
         });
     });
   };
 
-  saveFormRef = formRef => {
+  saveFormRef = (formRef) => {
     this.formRef = formRef;
   };
 

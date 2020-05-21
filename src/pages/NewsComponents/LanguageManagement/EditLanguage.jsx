@@ -66,7 +66,7 @@ class EditLanguage extends React.Component {
       if (err) {
         return "";
       }
-      AuthorizedRequests.put(`/language/${this.props.languageId}`, {
+      AuthorizedRequests.put(`/language/name/${this.props.languageId}`, {
         name: values.name
       })
         .then(response => {

@@ -7,9 +7,9 @@ const LanguageTable = ({
   data,
   deleteLanguage,
   toggleStatus,
-  initializeLanguage
+  initializeLanguage,
 }) => {
-  const SwitchStatus = record => {
+  const SwitchStatus = (record) => {
     if (record.active) {
       return <Switch checked onChange={() => toggleStatus(record.id)} />;
     }
@@ -17,7 +17,7 @@ const LanguageTable = ({
   };
 
   return (
-    <Table size="small" dataSource={data} rowKey={data => data.id}>
+    <Table size="small" dataSource={data} rowKey={(data) => data.id}>
       <Column title="id" dataIndex="id" key="key" />
       <Column title="Name" dataIndex="name" key="name" />
       <Column

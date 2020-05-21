@@ -66,7 +66,7 @@ class EditTags extends React.Component {
       if (err) {
         return "";
       }
-      AuthorizedRequests.put(`/tag/${this.props.tagsId}`, {
+      AuthorizedRequests.put(`/tag/name/${this.props.tagsId}`, {
         name: values.name
       })
         .then(response => {
