@@ -123,12 +123,6 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
             <Form.Item>
               <FileBase64 multiple={false} onDone={this.getFiles.bind(this)} />
             </Form.Item>
-            <Form.Item label="Title" style={{ display: "none" }}>
-              {getFieldDecorator("file", {
-                initialValue: this.state.files,
-                rules: [{ required: true, message: "Please Upload file!" }],
-              })(<Input style={{ display: "none" }} />)}
-            </Form.Item>
           </Form>
         </Modal>
       );
@@ -214,7 +208,7 @@ class AddNews extends React.Component {
         localityIds: values.localityIds,
         languageIds: values.languageIds,
         genreIds: values.genreIds,
-        base64string: values.file,
+        base64string: this.state.files,
       };
       AuthorizedRequests.post("/news", newsRequest)
         .then((response) => {
