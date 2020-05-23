@@ -24,7 +24,7 @@ export default class News extends React.Component {
       .catch((error) => message.error(error));
   };
   toggleTrending = (newsId) => {
-    AuthorizedRequests.post(`/news/updateTrending/${newsId}`)
+    AuthorizedRequests.post(`/auth/news/updateTrending/${newsId}`)
       .then((response) => {
         message.success(`${response.data}`);
         this.initializeNews();
@@ -34,7 +34,7 @@ export default class News extends React.Component {
       });
   };
   togglePublished = (newsId) => {
-    AuthorizedRequests.post(`/news/updatePublished/${newsId}`)
+    AuthorizedRequests.post(`/auth/news/updatePublished/${newsId}`)
       .then((response) => {
         message.success(`${response.data}`);
         this.initializeNews();
@@ -44,7 +44,7 @@ export default class News extends React.Component {
       });
   };
   deleteNews = (newsId) => {
-    AuthorizedRequests.delete(`/news/${newsId}`)
+    AuthorizedRequests.delete(`/auth/news/${newsId}`)
       .then((response) => {
         message.success("News Deleted Successfully");
         this.initializeNews();
