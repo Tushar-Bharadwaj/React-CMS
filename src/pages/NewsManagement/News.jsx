@@ -24,7 +24,7 @@ export default class News extends React.Component {
       .catch((error) => message.error(error));
   };
   toggleTrending = (newsId) => {
-    AuthorizedRequests.post(`/auth/news/updateTrending/${newsId}`)
+    AuthorizedRequests.put(`/auth/news/updateTrending/${newsId}`)
       .then((response) => {
         message.success(`${response.data}`);
         this.initializeNews();
@@ -34,7 +34,7 @@ export default class News extends React.Component {
       });
   };
   togglePublished = (newsId) => {
-    AuthorizedRequests.post(`/auth/news/updatePublished/${newsId}`)
+    AuthorizedRequests.put(`/auth/news/updatePublished/${newsId}`)
       .then((response) => {
         message.success(`${response.data}`);
         this.initializeNews();
