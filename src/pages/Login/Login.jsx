@@ -10,18 +10,18 @@ class LoginPage extends React.Component {
       this.props.history.push("/");
     }
   }
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         AuthenticationService.login(values.email, values.password).then(
-          user => {
+          (user) => {
             const { from } = this.props.location.state || {
-              from: { pathname: "/home" }
+              from: { pathname: "/home" },
             };
             this.props.history.push(from);
           },
-          error => {
+          (error) => {
             console.log("error");
             message.error("Invalid Credentials");
           }
@@ -34,13 +34,13 @@ class LoginPage extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Card
-        title="Login Page"
+        title="Sign Up Page"
         style={{ textAlign: "center", marginTop: "50px" }}
       >
         <Form onSubmit={this.handleSubmit} className="login-form">
           <Form.Item>
             {getFieldDecorator("email", {
-              rules: [{ required: true, message: "Please input your email!" }]
+              rules: [{ required: true, message: "Please input your email!" }],
             })(
               <Input
                 prefix={
@@ -53,8 +53,8 @@ class LoginPage extends React.Component {
           <Form.Item>
             {getFieldDecorator("password", {
               rules: [
-                { required: true, message: "Please input your Password!" }
-              ]
+                { required: true, message: "Please input your Password!" },
+              ],
             })(
               <Input
                 prefix={
